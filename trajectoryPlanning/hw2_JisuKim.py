@@ -44,7 +44,6 @@ class pandaROS:
 
     def linearTrajectory(self, q0, qf, t_end):
         # q = a1*t + a0
-        # t = 
         print('Linear Trajectory')
         timeStep = 0.01
         
