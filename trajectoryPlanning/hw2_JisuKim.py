@@ -47,15 +47,15 @@ class pandaROS:
         # q = a1*t + a0
         print('Linear Trajectory')
         timeStep = 1.0/myRate
-        linTraj = np.arange(0,t_end,timeStep)
+        timeArr = np.arange(0,t_end,timeStep)
         A = np.array([[0,1],[t_end,1]])
         b = np.array([q0, qf])
         x = np.linalg.inv(A) @ b
-        Trj = np.zeros((linTraj.size,6))
+        Trj = np.zeros((timeArr.size,9))
 
-        for i in range(6):
-            for tt in range(linTraj.size):
-                Trj[tt,i] = x[0,i]*linTraj[tt] + x[1,i]
+        for i in range(9):
+            for tt in range(timeArr.size):
+                Trj[tt,i] = x[0,i]*timeArr[tt] + x[1,i]
         
         return Trj
 
@@ -64,28 +64,40 @@ class pandaROS:
         print('Cubic Trajectory')
 
         timeStep = 1.0/myRate
-        linTraj = np.arange(0,t_end,timeStep)
+        timeArr = np.arange(0,t_end,timeStep)
         zero = [0,0,0,0,0,0,0,0,0]
-        A = np.array([[0.0,0.0,0.0,1.0],[t_end**3,t_end**2, t_end, 1],[0,0,1,0],[3*t_end,2*t_end,1,0]])
+        A = np.array([[0,0,0,1],[t_end**3,t_end**2, t_end, 1],[0,0,1,0],[3*t_end**2,2*t_end,1,0]])
         b = np.array([q0, qf,zero,zero])
         x = np.linalg.inv(A) @ b
 
-        Trj = np.zeros((linTraj.size,6))
+        Trj = np.zeros((timeArr.size,9))
 
-        for i in range(6):
-            for tt in range(linTraj.size):
-                Trj[tt,i] = x[0,i]*linTraj[tt]**3 + x[1,i]*linTraj[tt]**2 + x[2,i]*linTraj[tt] + x[3,i]
+        for i in range(9):
+            for tt in range(timeArr.size):
+                Trj[tt,i] = x[0,i]*timeArr[tt]**3 + x[1,i]*timeArr[tt]**2 + x[2,i]*timeArr[tt] + x[3,i]
         
         return Trj
         
-    def LSPBTrajectory(self, q0, qf, t_end):
-        
+    def LSPBTrajectory(self, q0, qf, t_b, t_end):
         print('LSPB Trajectory')
+        timeStep = 1.0/myRate
+        timeArr = np.arange(0,t_end,timeStep)
+        Trj = np.zeros((timeArr.size,9))
+        for i in range(timeArr.size):
+            for j in range(9):
+                v_max = 1.5*(qf[j]-q0[j])/t_end
+                if timeArr[i] <= t_b:
+                    Trj[i,j] = q0[j] + 0.5*(v_max/t_b)*(timeArr[i]**2)
+                elif timeArr[i] <= (t_end-t_b):
+                    Trj[i,j] = (qf[j] + q0[j] - v_max*t_end)/2.0 + v_max*timeArr[i]
+                else:
+                    Trj[i,j] = qf[j] - 0.5*(v_max/t_b)*(timeArr[i]-t_end)**2
 
+        return Trj
 
 if __name__ == "__main__":
     panda = pandaROS()
-    joints = [0.0, -0.702, -0.678, -2.238, -0.365, 0.703, 0.808, 0.0, 0.0]
+    # joints = [0.0, -0.702, -0.678, -2.238, -0.365, 0.703, 0.808, 0.0, 0.0]
 
     q0 = [-0.12, 0.30, 0.18, -2.26, 1.58, 1.64, -1.77, 0.00, 0.00] # 0.5, 0.13, 0.26
     qf = [ 0.41, 0.50, 0.38, -1.68, 2.02, 2.28, -1.60, 0.00, 0.00] # 0.5, 0.49, 0.37
@@ -99,7 +111,6 @@ if __name__ == "__main__":
         for i in range(linTraj.shape[0]):
             panda.set_joint_position(linTraj[i,:])
             time.sleep(0.01)
-
         linTraj = panda.linearTrajectory(qf, q0, 3)
         for i in range(linTraj.shape[0]):
             panda.set_joint_position(linTraj[i,:])
@@ -109,8 +120,17 @@ if __name__ == "__main__":
         for i in range(cubicTraj.shape[0]):
             panda.set_joint_position(cubicTraj[i,:])
             time.sleep(0.01)
-        
         cubicTraj = panda.cubicTrajectory(qf, q0, 3)
         for i in range(cubicTraj.shape[0]):
             panda.set_joint_position(cubicTraj[i,:])
+            time.sleep(0.01)
+        
+        lspbTraj = panda.LSPBTrajectory(q0,qf,1,3)
+        for i in range(lspbTraj.shape[0]):
+            panda.set_joint_position(lspbTraj[i,:])
+            time.sleep(0.01)
+
+        lspbTraj = panda.LSPBTrajectory(qf,q0,1,3)
+        for i in range(lspbTraj.shape[0]):
+            panda.set_joint_position(lspbTraj[i,:])
             time.sleep(0.01)
