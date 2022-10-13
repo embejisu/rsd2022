@@ -104,7 +104,7 @@ class pandaKinematics:
             if RRMC:
                 reached = True
 
-        print ("iter=", iter, "time=", time.time() - st)
+        # print ("iter=", iter, "time=", time.time() - st)
         assert ~np.isnan(qk).any()
         return qk
 
