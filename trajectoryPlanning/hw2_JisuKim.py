@@ -56,10 +56,9 @@ class pandaROS:
         for i in range(9):
             for tt in range(timeArr.size):
                 Trj[tt,i] = x[0,i]*timeArr[tt] + x[1,i]
-        
         return Trj
 
-    def cubicTrajectory(self, q0, qf, t_end):
+    def cubicTrajectory(self, q0, qf, v0, vf, t_end):
         # q = a2*t^2 + a1*t + a0
         print('Cubic Trajectory')
 
@@ -67,7 +66,7 @@ class pandaROS:
         timeArr = np.arange(0,t_end,timeStep)
         zero = [0,0,0,0,0,0,0,0,0]
         A = np.array([[0,0,0,1],[t_end**3,t_end**2, t_end, 1],[0,0,1,0],[3*t_end**2,2*t_end,1,0]])
-        b = np.array([q0, qf,zero,zero])
+        b = np.array([q0, qf, v0, vf])
         x = np.linalg.inv(A) @ b
 
         Trj = np.zeros((timeArr.size,9))
@@ -75,7 +74,6 @@ class pandaROS:
         for i in range(9):
             for tt in range(timeArr.size):
                 Trj[tt,i] = x[0,i]*timeArr[tt]**3 + x[1,i]*timeArr[tt]**2 + x[2,i]*timeArr[tt] + x[3,i]
-        
         return Trj
         
     def LSPBTrajectory(self, q0, qf, t_b, t_end):
@@ -92,45 +90,67 @@ class pandaROS:
                     Trj[i,j] = (qf[j] + q0[j] - v_max*t_end)/2.0 + v_max*timeArr[i]
                 else:
                     Trj[i,j] = qf[j] - 0.5*(v_max/t_b)*(timeArr[i]-t_end)**2
-
         return Trj
 
+    def cubic_with_waypoint(self, q0, qw1, qw2, qf):
+        print('2 Waypoints Trajectory')
+        v0 = np.zeros(9)
+        vf = np.zeros(9)
+        Trj = []
+        
+        traj1 = self.cubicTrajectory(q0, qw1, v0, vf, 3)
+        traj2 = self.cubicTrajectory(qw1, qw2, v0, vf, 3)
+        traj3 = self.cubicTrajectory(qw2, qf, v0, vf, 3)
+        
+        Trj.append(traj1)
+        Trj.append(traj2)
+        Trj.append(traj3)
+        
+        return Trj
+    
 if __name__ == "__main__":
     panda = pandaROS()
-    # joints = [0.0, -0.702, -0.678, -2.238, -0.365, 0.703, 0.808, 0.0, 0.0]
-
-    q0 = [-0.12, 0.30, 0.18, -2.26, 1.58, 1.64, -1.77, 0.00, 0.00] # 0.5, 0.13, 0.26
-    qf = [ 0.41, 0.50, 0.38, -1.68, 2.02, 2.28, -1.60, 0.00, 0.00] # 0.5, 0.49, 0.37
+    q0  = [-0.12,  0.30, 0.18, -2.26,  1.58, 1.64, -1.77, 0.00, 0.00] # 0.5, 0.13, 0.26, 0, 0, 0
+    qw1 = [-1.53, -2.90, 0.00, -4.41, -0.06, 0.15, -2.41, 0.00, 0.00] # 0.5, 0.10, 0.50, 0, 0, 0
+    qw2 = [-1.42, -2.68, 0.06, -4.28,  0.01, 0.49, -2.41, 0.00, 0.00] # 0.5, 0.21, 0.45, 0, 0, 0
+    qf  = [ 0.41, 0.50, 0.38, -1.68, 2.02, 2.28, -1.60, 0.00, 0.00] # 0.5, 0.49, 0.37, 0, 0, 0
     
     panda.set_joint_position(q0)
     time.sleep(1)
 
     t = 0.0
     while not rospy.is_shutdown():
-        linTraj = panda.linearTrajectory(q0, qf, 3)
-        for i in range(linTraj.shape[0]):
-            panda.set_joint_position(linTraj[i,:])
-            time.sleep(0.01)
-        linTraj = panda.linearTrajectory(qf, q0, 3)
-        for i in range(linTraj.shape[0]):
-            panda.set_joint_position(linTraj[i,:])
-            time.sleep(0.01)      
+        # linTraj = panda.linearTrajectory(q0, qf, 3)
+        # for i in range(linTraj.shape[0]):
+        #     panda.set_joint_position(linTraj[i,:])
+        #     time.sleep(0.01)
+        # linTraj = panda.linearTrajectory(qf, q0, 3)
+        # for i in range(linTraj.shape[0]):
+        #     panda.set_joint_position(linTraj[i,:])
+        #     time.sleep(0.01)      
 
-        cubicTraj = panda.cubicTrajectory(q0, qf, 3)
-        for i in range(cubicTraj.shape[0]):
-            panda.set_joint_position(cubicTraj[i,:])
-            time.sleep(0.01)
-        cubicTraj = panda.cubicTrajectory(qf, q0, 3)
-        for i in range(cubicTraj.shape[0]):
-            panda.set_joint_position(cubicTraj[i,:])
-            time.sleep(0.01)
+        # v0 = [0,0,0,0,0,0,0,0,0]
+        # vf = [0,0,0,0,0,0,0,0,0]
+        # cubicTraj = panda.cubicTrajectory(q0, qf, v0, vf, 3)
+        # for i in range(cubicTraj.shape[0]):
+        #     panda.set_joint_position(cubicTraj[i,:])
+        #     time.sleep(0.01)
+        # cubicTraj = panda.cubicTrajectory(qf, q0, v0, vf, 3)
+        # for i in range(cubicTraj.shape[0]):
+        #     panda.set_joint_position(cubicTraj[i,:])
+        #     time.sleep(0.01)
         
-        lspbTraj = panda.LSPBTrajectory(q0,qf,1,3)
-        for i in range(lspbTraj.shape[0]):
-            panda.set_joint_position(lspbTraj[i,:])
-            time.sleep(0.01)
+        # lspbTraj = panda.LSPBTrajectory(q0,qf,1,3)
+        # for i in range(lspbTraj.shape[0]):
+        #     panda.set_joint_position(lspbTraj[i,:])
+        #     time.sleep(0.01)
 
-        lspbTraj = panda.LSPBTrajectory(qf,q0,1,3)
-        for i in range(lspbTraj.shape[0]):
-            panda.set_joint_position(lspbTraj[i,:])
+        # lspbTraj = panda.LSPBTrajectory(qf,q0,1,3)
+        # for i in range(lspbTraj.shape[0]):
+        #     panda.set_joint_position(lspbTraj[i,:])
+        #     time.sleep(0.01)
+        
+        wpTraj = panda.cubic_with_waypoint(q0,qw1,qw2,qf)
+        for i in range(wpTraj.shape[0]):
+            panda.set_joint_position(wpTraj[i,:])
             time.sleep(0.01)

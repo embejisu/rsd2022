@@ -67,7 +67,7 @@ while not rospy.is_shutdown():
         teleop_pub.publish(myMsg)
         Tm = forward_kinematics_master(m)
         #print ("Omni_fk=", omniKinematics.fk(m))
-        #print ("Panda_ik=", pandaKinematics.ik(Tm))
+        print ("Panda_ik=", pandaKinematics.ik(Tm))
         print ("Panda_fk=\n", pandaKinematics.fk(joints=s[:7])[0][-1])
         print ('\n')
         rate.sleep()
