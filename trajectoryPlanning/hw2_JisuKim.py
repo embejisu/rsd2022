@@ -47,7 +47,6 @@ class pandaROS:
         # q = a1*t + a0
         print('Linear Trajectory')
         timeStep = 1.0/myRate
-        #print('%.3f' %panda.joints[0])
         linTraj = np.arange(0,t_end,timeStep)
         A = np.array([[0,1],[t_end,1]])
         b = np.array([q0, qf])
@@ -65,16 +64,17 @@ class pandaROS:
         print('Cubic Trajectory')
 
         timeStep = 1.0/myRate
-        #print('%.3f' %panda.joints[0])
         linTraj = np.arange(0,t_end,timeStep)
-        A = np.array([[0,1],[t_end,1]])
-        b = np.array([q0, qf])
+        zero = [0,0,0,0,0,0,0,0,0]
+        A = np.array([[0.0,0.0,0.0,1.0],[t_end**3,t_end**2, t_end, 1],[0,0,1,0],[3*t_end,2*t_end,1,0]])
+        b = np.array([q0, qf,zero,zero])
         x = np.linalg.inv(A) @ b
+
         Trj = np.zeros((linTraj.size,6))
 
         for i in range(6):
             for tt in range(linTraj.size):
-                Trj[tt,i] = x[0,i]*linTraj[tt] + x[1,i]
+                Trj[tt,i] = x[0,i]*linTraj[tt]**3 + x[1,i]*linTraj[tt]**2 + x[2,i]*linTraj[tt] + x[3,i]
         
         return Trj
         
@@ -95,11 +95,6 @@ if __name__ == "__main__":
 
     t = 0.0
     while not rospy.is_shutdown():
-        # joints[0] = 1.5*np.sin(2*np.pi*t/10)
-        # panda.set_joint_position(joints)
-        # t += 0.01
-        # time.sleep(0.01)
-
         linTraj = panda.linearTrajectory(q0, qf, 3)
         for i in range(linTraj.shape[0]):
             panda.set_joint_position(linTraj[i,:])
@@ -108,5 +103,14 @@ if __name__ == "__main__":
         linTraj = panda.linearTrajectory(qf, q0, 3)
         for i in range(linTraj.shape[0]):
             panda.set_joint_position(linTraj[i,:])
+            time.sleep(0.01)      
+
+        cubicTraj = panda.cubicTrajectory(q0, qf, 3)
+        for i in range(cubicTraj.shape[0]):
+            panda.set_joint_position(cubicTraj[i,:])
             time.sleep(0.01)
         
+        cubicTraj = panda.cubicTrajectory(qf, q0, 3)
+        for i in range(cubicTraj.shape[0]):
+            panda.set_joint_position(cubicTraj[i,:])
+            time.sleep(0.01)
