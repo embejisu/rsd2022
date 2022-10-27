@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     # workspace
     p0 = [0.4, -0.25, 0.25, math.radians(0), math.radians(-90), math.radians(-90)]
-    pf = [0.2, 0.25, 0.55, math.radians(0), math.radians(-90), math.radians(-90)]
+    pf = [0.2, 0.25, 0.55, math.radians(0), math.radians(-90), math.radians(-45)]
 
     panda.set_joint_position(q0)
     time.sleep(1)
