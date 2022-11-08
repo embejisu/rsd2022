@@ -48,7 +48,7 @@ def mapping(joint_m, joint_s):
 
     s_new = pandaKinematics.ik(Tb_ed=Tm, q0=joint_s[:7], RRMC=True)
     s_new_null = pandaKinematics.null_space_control(joints=joint_s[:7], crit='joint_limit')
-    return s_new + s_new_null
+    return s_new #+ s_new_null
 
 teleop_pub = rospy.Publisher('/teleop/panda/joint_states',JointState, latch=True, queue_size=1)
 p_sub = rospy.Subscriber('/panda/joint_states',JointState,_js_callback_s,queue_size=1,tcp_nodelay=True)
@@ -67,9 +67,9 @@ while not rospy.is_shutdown():
         teleop_pub.publish(myMsg)
         Tm = forward_kinematics_master(m)
         #print ("Omni_fk=", omniKinematics.fk(m))
-        print ("Panda_ik=", pandaKinematics.ik(Tm))
-        print ("Panda_fk=\n", pandaKinematics.fk(joints=s[:7])[0][-1])
+        #print ("Panda_ik=", pandaKinematics.ik(Tm))
+        #print ("Panda_fk=\n", pandaKinematics.fk(joints=s[:7])[0][-1])
         ss = np.array(s)
-        print(ss)
-        print ('\n')
+        #print(ss)
+        #print ('\n')
         rate.sleep()

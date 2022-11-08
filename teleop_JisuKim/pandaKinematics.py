@@ -246,7 +246,7 @@ if __name__ == "__main__":
     joints = [0.95, -0.7015554883689211, -0.6780726720056217, -2.2381007898418606, -0.36520080861118104,
               1.6032700547244814, 1.108291777478017]
     Tbe = pandaKinematics.fk(joints=joints)[0][-1]
-    print (Tbe)
+    # print (Tbe)
     # p = T[:3, -1]
     # quat = U.R_to_quaternion(T[:3, :3])
     # print (p)
