@@ -23,7 +23,8 @@
     </inertial>
   </link>
 
-  <joint name="shoulder_pan_joint" type="revolute">
+  <!-- <joint name="shoulder_pan_joint" type="revolute"> -->
+  <joint name="shoulder_pan_joint" type="fixed">
     <parent link="base_link"/>
     <child link="shoulder_link"/>
     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.089159"/>
@@ -64,8 +65,11 @@
       <geometry>
         <mesh filename="../meshes/ur5/visual/upperarm.dae"/>
       </geometry>
-      <material name="LightGrey">
+      <!-- <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
+      </material> -->
+      <material name="orange">
+        <color rgba="0.99 0.52 0.043 1"/>
       </material>
     </visual>
     <collision>
@@ -92,8 +96,11 @@
       <geometry>
         <mesh filename="../meshes/ur5/visual/forearm.dae"/>
       </geometry>
-      <material name="LightGrey">
+      <!-- <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
+      </material> -->
+      <material name="green">
+        <color rgba="0 1 0 1"/>
       </material>
     </visual>
     <collision>
@@ -107,7 +114,8 @@
       <inertia ixx="0.049443313556" ixy="0.0" ixz="0.0" iyy="0.049443313556" iyz="0.0" izz="0.004095"/>
     </inertial>
   </link>
-  <joint name="wrist_1_joint" type="revolute">
+  <!-- <joint name="wrist_1_joint" type="revolute"> -->
+  <joint name="wrist_1_joint" type="fixed">
     <parent link="forearm_link"/>
     <child link="wrist_1_link"/>
     <origin rpy="0.0 1.57079632679 0.0" xyz="0.0 0.0 0.39225"/>
@@ -135,7 +143,8 @@
       <inertia ixx="0.111172755531" ixy="0.0" ixz="0.0" iyy="0.111172755531" iyz="0.0" izz="0.21942"/>
     </inertial>
   </link>
-  <joint name="wrist_2_joint" type="revolute">
+  <!-- <joint name="wrist_2_joint" type="revolute"> -->
+  <joint name="wrist_2_joint" type="fixed">
     <parent link="wrist_1_link"/>
     <child link="wrist_2_link"/>
     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.093 0.0"/>
@@ -163,7 +172,8 @@
       <inertia ixx="0.111172755531" ixy="0.0" ixz="0.0" iyy="0.111172755531" iyz="0.0" izz="0.21942"/>
     </inertial>
   </link>
-  <joint name="wrist_3_joint" type="revolute">
+  <!-- <joint name="wrist_3_joint" type="revolute"> -->
+  <joint name="wrist_3_joint" type="fixed">
     <parent link="wrist_2_link"/>
     <child link="wrist_3_link"/>
     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.09465"/>

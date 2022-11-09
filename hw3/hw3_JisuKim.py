@@ -17,7 +17,6 @@ plane_id = p.loadURDF("plane.urdf")
 # Setup objects
 StartPos = [0, 0, 0]
 StartOrientation = p.getQuaternionFromEuler([0,0,0])
-# manipulator_id = p.loadURDF("./ur_description/urdf/ur5.urdf", StartPos, StartOrientation, useFixedBase=1)
 manipulator_id = p.loadURDF("./ur_description/urdf/ur5.urdf", StartPos, StartOrientation, useFixedBase=1)
 
 numJoints = p.getNumJoints(manipulator_id) 
