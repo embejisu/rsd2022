@@ -7,13 +7,16 @@
       <geometry>
         <mesh filename="../meshes/ur5/visual/base.dae"/>
       </geometry>
-      <material name="LightGrey">
+      <!-- <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
+      </material> -->
+      <material name="orange">
+        <color rgba="0.99 0.52 0.043 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="../meshes/ur5/collision/base.stl"/>
+        <mesh filename="../meshes/ur5/collision/base.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -37,13 +40,16 @@
       <geometry>
         <mesh filename="../meshes/ur5/visual/shoulder.dae"/>
       </geometry>
-      <material name="LightGrey">
+      <!-- <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
+      </material> -->
+      <material name="orange">
+        <color rgba="0.99 0.52 0.043 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="../meshes/ur5/collision/shoulder.stl"/>
+        <mesh filename="../meshes/ur5/collision/shoulder.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -74,7 +80,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="../meshes/ur5/collision/upperarm.stl"/>
+        <mesh filename="../meshes/ur5/collision/upperarm.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -105,7 +111,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="../meshes/ur5/collision/forearm.stl"/>
+        <mesh filename="../meshes/ur5/collision/forearm.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -128,13 +134,16 @@
       <geometry>
         <mesh filename="../meshes/ur5/visual/wrist1.dae"/>
       </geometry>
-      <material name="LightGrey">
+      <!-- <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
+      </material> -->
+      <material name="green">
+        <color rgba="0 1 0 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="../meshes/ur5/collision/wrist1.stl"/>
+        <mesh filename="../meshes/ur5/collision/wrist1.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -157,13 +166,16 @@
       <geometry>
         <mesh filename="../meshes/ur5/visual/wrist2.dae"/>
       </geometry>
-      <material name="LightGrey">
+      <!-- <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
+      </material> -->
+      <material name="green">
+        <color rgba="0 1 0 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="../meshes/ur5/collision/wrist2.stl"/>
+        <mesh filename="../meshes/ur5/collision/wrist2.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -186,13 +198,16 @@
       <geometry>
         <mesh filename="../meshes/ur5/visual/wrist3.dae"/>
       </geometry>
-      <material name="LightGrey">
+      <!-- <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
+      </material> -->
+      <material name="green">
+        <color rgba="0 1 0 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="../meshes/ur5/collision/wrist3.stl"/>
+        <mesh filename="../meshes/ur5/collision/wrist3.dae"/>
       </geometry>
     </collision>
     <inertial>
