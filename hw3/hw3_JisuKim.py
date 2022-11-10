@@ -64,7 +64,7 @@ StartOrientation = p.getQuaternionFromEuler([0,0,0])
 robot_id = p.loadURDF("urdf/ur5.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION|p.URDF_USE_INERTIA_FROM_FILE)
 
 dof = p.getNumJoints(robot_id)
-joints = range(dof)
+joints = range(dof-1)
 print("Number of joints: {}".format(dof))
 
 # Reset states controller
@@ -78,22 +78,22 @@ p.setJointMotorControlArray(bodyUniqueId=robot_id,
 # Perform simulation step
 while True:
     joint_states = p.getJointStates(robot_id, joints)
-    pos = [state[0] for state in joint_states]
-    vel = [state[1] for state in joint_states]
-    acc_des = [0. for _ in pos]
-    vel_des = [0. for _ in pos]
+    joint_pos = [state[0] for state in joint_states]
+    joint_vel = [state[1] for state in joint_states]
+    acc_des = [0. for _ in joint_pos]
+    vel_des = [0. for _ in joint_vel]
 
-    pos_ee, ori_ee, _, _, _, _ = p.getLinkState(robot_id,dof-1)
+    pos_ee, ori_ee, _, _, _, _ = p.getLinkState(robot_id,2)
     # q_curr = np.array([pos_ee[0], pos_ee[2]])
-    # print(pos_ee)
-    print(joint_states[1][0])
+    print(joint_vel)
+    # print(joint_states[1][1])
 
-    M_sim = np.array(p.calculateMassMatrix(robot_id, pos))
-    # print(M_sim)
-    C_sim = np.array(p.calculateInverseDynamics(robot_id, pos, vel, acc_des))
-    # print(C_sim)
-    G_sim = np.array(p.calculateInverseDynamics(robot_id, pos, vel_des, acc_des))
-    # print(G_sim)
+    # M_sim = np.array(p.calculateMassMatrix(robot_id, pos))
+    # # print(M_sim)
+    # C_sim = np.array(p.calculateInverseDynamics(robot_id, pos, vel, acc_des))
+    # # print(C_sim)
+    # G_sim = np.array(p.calculateInverseDynamics(robot_id, pos, vel_des, acc_des))
+    # # print(G_sim)
 
     #calc_mass_mat
     
