@@ -61,8 +61,8 @@ p.setAdditionalSearchPath(os.path.dirname(__file__) + '/ur_description')
 # Setup objects
 StartPos = [0, 0, 0]
 StartOrientation = p.getQuaternionFromEuler([0,0,0])
-robot_id = p.loadURDF("urdf/ur5.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION|p.URDF_USE_INERTIA_FROM_FILE)
-# robot_id = p.loadURDF("urdf/ur5.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION)
+robot_id = p.loadURDF("urdf/ur5.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION | p.URDF_USE_INERTIA_FROM_FILE)
+# robot_id = p.loadSDF("urdf/ur5.sdf")
 
 dof = p.getNumJoints(robot_id)
 joints = range(dof-1)
@@ -84,16 +84,15 @@ while True:
     acc_des = [0. for _ in pos]
     vel_des = [0. for _ in vel]
 
-    pos_ee, ori_ee, _, _, _, _ = p.getLinkState(robot_id,2)
-    q = np.array([joint_states[1][0], joint_states[2][0]])
-    # print(pos)
+    pos_ee, ori_ee, _, _, _, _ = p.getLinkState(robot_id, dof-1)
+    # q = np.array([joint_states[1][0], joint_states[2][0]])
+    print(pos)
     
-    M_sim = np.array(p.calculateMassMatrix(robot_id, pos))
-    M_cal = calc_mass_mat(q)
+    # M_sim = np.array(p.calculateMassMatrix(robot_id, pos))
+    # M_cal = calc_mass_mat(q)
     # print(M_sim-M_cal)
     
-    # C_sim = np.array(p.calculateInverseDynamics(robot_id, pos, vel, acc_des))
-    
+    # C_sim = np.array(p.calculateInverseDynamics(robot_id, pos[:5], vel[:5], acc_des))
     # print(C_sim)
     # G_sim = np.array(p.calculateInverseDynamics(robot_id, pos, vel_des, acc_des))
     # print(G_sim)
