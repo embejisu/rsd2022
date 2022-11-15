@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--FOR GRIPPER, THERE IS NO LINK INERTIA DEFINED HERE-->
+<?xml version="1.0"?>
 <robot name="universal_robot">
 
   <link name="base_link">
@@ -11,16 +10,20 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
     </visual>
+    
+    <inertial>
+      <!-- <mass value="4.0"/> -->
+      <mass value="0.0"/>
+      <!-- <inertia ixx="0.00443333156" ixy="0.0" ixz="0.0" iyy="0.00443333156" iyz="0.0" izz="0.0072"/> -->
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    </inertial>    
+
     <collision>
       <geometry>
         <mesh filename="../meshes/ur5/collision/base.dae"/>
       </geometry>
     </collision>
-    <inertial>
-      <mass value="4.0"/>
-      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
-      <inertia ixx="0.00443333156" ixy="0.0" ixz="0.0" iyy="0.00443333156" iyz="0.0" izz="0.0072"/>
-    </inertial>
   </link>
 
   <!-- Joint 1 -->
@@ -32,6 +35,7 @@
     <limit effort="150.0" lower="-6.28318530718" upper="6.28318530718" velocity="3.15"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
+
   <link name="shoulder_link">
     <visual>
       <geometry>
@@ -41,16 +45,20 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
     </visual>
+
+    <inertial>
+      <!-- <mass value="3.7"/> -->
+      <mass value="0.0"/>
+      <!-- <inertia ixx="0.010267495893" ixy="0.0" ixz="0.0" iyy="0.010267495893" iyz="0.0" izz="0.00666"/> -->
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    </inertial>
+
     <collision>
       <geometry>
         <mesh filename="../meshes/ur5/collision/shoulder.dae"/>
       </geometry>
     </collision>
-    <inertial>
-      <mass value="3.7"/>
-      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
-      <inertia ixx="0.010267495893" ixy="0.0" ixz="0.0" iyy="0.010267495893" iyz="0.0" izz="0.00666"/>
-    </inertial>
   </link>
 
   <!-- Joint 2 -->
@@ -62,6 +70,7 @@
     <limit effort="150.0" lower="-6.28318530718" upper="6.28318530718" velocity="3.15"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
+
   <link name="upper_arm_link">
     <visual>
       <geometry>
@@ -71,16 +80,18 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
     </visual>
+
+    <inertial>
+      <mass value="8.393"/>
+      <inertia ixx="0.22689067591" ixy="0.0" ixz="0.0" iyy="0.22689067591" iyz="0.0" izz="0.0151074"/>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.28"/>
+    </inertial>
+
     <collision>
       <geometry>
         <mesh filename="../meshes/ur5/collision/upperarm.dae"/>
       </geometry>
     </collision>
-    <inertial>
-      <mass value="8.393"/>
-      <origin rpy="0 0 0" xyz="0.0 0.0 0.28"/>
-      <inertia ixx="0.22689067591" ixy="0.0" ixz="0.0" iyy="0.22689067591" iyz="0.0" izz="0.0151074"/>
-    </inertial>
   </link>
 
   <!-- Joint 3 -->
@@ -92,6 +103,7 @@
     <limit effort="150.0" lower="-3.14159265359" upper="3.14159265359" velocity="3.15"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
+
   <link name="forearm_link">
     <visual>
       <geometry>
@@ -101,16 +113,18 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
     </visual>
+    
+    <inertial>
+      <mass value="2.275"/>
+      <inertia ixx="0.049443313556" ixy="0.0" ixz="0.0" iyy="0.049443313556" iyz="0.0" izz="0.004095"/>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.25"/>
+    </inertial>
+
     <collision>
       <geometry>
         <mesh filename="../meshes/ur5/collision/forearm.dae"/>
       </geometry>
     </collision>
-    <inertial>
-      <mass value="2.275"/>
-      <origin rpy="0 0 0" xyz="0.0 0.0 0.25"/>
-      <inertia ixx="0.049443313556" ixy="0.0" ixz="0.0" iyy="0.049443313556" iyz="0.0" izz="0.004095"/>
-    </inertial>
   </link>
   
   <!-- Joint 4 -->
@@ -137,9 +151,11 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="1.219"/>
+      <!-- <mass value="1.219"/> -->
+      <mass value="0.0"/>
+      <!-- <inertia ixx="0.111172755531" ixy="0.0" ixz="0.0" iyy="0.111172755531" iyz="0.0" izz="0.21942"/> -->
       <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
-      <inertia ixx="0.111172755531" ixy="0.0" ixz="0.0" iyy="0.111172755531" iyz="0.0" izz="0.21942"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
     </inertial>
   </link>
   
@@ -167,9 +183,11 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="1.219"/>
+      <!-- <mass value="1.219"/> -->
       <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
-      <inertia ixx="0.111172755531" ixy="0.0" ixz="0.0" iyy="0.111172755531" iyz="0.0" izz="0.21942"/>
+      <mass value="0.0"/>
+      <!-- <inertia ixx="0.111172755531" ixy="0.0" ixz="0.0" iyy="0.111172755531" iyz="0.0" izz="0.21942"/> -->
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
     </inertial>
   </link>
   
@@ -197,27 +215,14 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.1879"/>
+      <!-- <mass value="0.1879"/> -->
+      <mass value="0.0"/>
+      <!-- <inertia ixx="0.0171364731454" ixy="0.0" ixz="0.0" iyy="0.0171364731454" iyz="0.0" izz="0.033822"/> -->
       <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
-      <inertia ixx="0.0171364731454" ixy="0.0" ixz="0.0" iyy="0.0171364731454" iyz="0.0" izz="0.033822"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
     </inertial>
   </link>
   
-  <!-- Joint 7? -->
-  <joint name="ee_fixed_joint" type="fixed">
-    <parent link="wrist_3_link"/>
-    <child link="ee_link"/>
-    <origin rpy="0.0 0.0 1.57079632679" xyz="0.0 0.0823 0.0"/>
-  </joint>
-  <link name="ee_link">
-    <collision>
-      <geometry>
-        <box size="0.01 0.01 0.01"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="-0.01 0 0"/>
-      <mass value="1.0"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-    </collision>
-  </link>
+
 
 </robot>

@@ -12,6 +12,7 @@ m2 = 2.275
 p_com = np.array([[0.0, 0.0, 0.28],[0.0, 0.0, 0.25]])
 lc1 = 0.28
 lc2 = 0.25
+l1 = 0.425
 
 Is = []
 Is.append([[0.22689067591, 0.0,           0.00],
@@ -26,33 +27,36 @@ Is.append([[0.049443313556, 0.0,            0.0],
 np.set_printoptions(formatter={'float_kind':lambda x:"{0:0.3f}".format(x)})
 
 def calc_mass_mat(q):
-    s1 = np.sin(q[0])
-    s2 = np.sin(q[0])
-    c1 = np.cos(q[1])
     c2 = np.cos(q[1])
-    s12 = np.sin(q[0]+q[1])
-    c12 = np.cos(q[0]+q[1])
 
-    M = np.array([[m1*lc1*lc1 + m2*(lc1*lc1 + 2*lc1*lc2*c2 + lc2*lc2)+Is[0][2][2]+Is[1][2][2], m2*(lc1*lc2*c2+lc2*lc2)+Is[1][2][2]],
-                  [m2*(lc1*lc2*c2+lc2*lc2)+Is[1][2][2], m2*lc2*lc2+Is[1][2][2]]])
+    d11 = m1*lc1*lc1 + m2*(l1*l1 + lc2*lc2 + 2.0*l1*lc2*c2) + Is[0][1][1]+Is[1][1][1]
+    d12 = d21 = m2*(lc2*lc2 + l1*lc2*c2) + Is[1][1][1]
+    d22 = m2*lc2*lc2 + Is[1][1][1]
+
+    M = np.array([[d11,d12],[d21,d22]])
 
     return M
 
 def calc_coriolis_mat(q, q_dot):
-
-    return
+    h = -m2*l1*lc2*np.sin(q[1])
+    C = np.array([[h*q_dot[1], h*(q_dot[0]+q_dot[1])],[-h*q_dot[0], 0.0]])
+    # print("C")
+    # print(C)
+    cal_toque = np.array([C[0][0]*q_dot[0] + C[0][1]*q_dot[1], C[1][0]*q_dot[0] + C[1][1]*q_dot[1]])
+    return cal_toque
 
 def calc_gravity_mat(q):
-
-    return
+    g1 = (m1*lc1 + m2*l1)*np.cos(q[0]) + m2*lc2*np.cos(q[0]+q[1])
+    g2 = m2*lc2*np.cos(q[0]+q[1])
+    G = -9.81*np.array([g1,g2])
+    return G
 
 # Environment setup
-SAMPLING_RATE = 1e-2    # 0.01s = 10 ms
+SAMPLING_RATE = 1e-3  # 0.001s = 1 ms
 physics_client_id = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.setTimeStep(SAMPLING_RATE)  # 1000Hz sampling rate
 p.setGravity(0, 0, -9.81)
-# p.setGravity(0, 0, 0)
 
 # Setup plane
 plane_id = p.loadURDF("plane.urdf")
@@ -62,7 +66,6 @@ p.setAdditionalSearchPath(os.path.dirname(__file__) + '/ur_description')
 StartPos = [0, 0, 0]
 StartOrientation = p.getQuaternionFromEuler([0,0,0])
 robot_id = p.loadURDF("urdf/ur5.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION | p.URDF_USE_INERTIA_FROM_FILE)
-# robot_id = p.loadSDF("urdf/ur5.sdf")
 
 dof = p.getNumJoints(robot_id)
 joints = range(dof-1)
@@ -79,25 +82,37 @@ p.setJointMotorControlArray(bodyUniqueId=robot_id,
 # Perform simulation step
 while True:
     joint_states = p.getJointStates(robot_id, range(dof))
-    pos = [state[0] for state in joint_states]
-    vel = [state[1] for state in joint_states]
-    acc_des = [0. for _ in pos]
-    vel_des = [0. for _ in vel]
-
-    pos_ee, ori_ee, _, _, _, _ = p.getLinkState(robot_id, dof-1)
-    # q = np.array([joint_states[1][0], joint_states[2][0]])
-    print(pos)
+    q = [state[0] for state in joint_states]
+    q_dot = [state[1] for state in joint_states]
+    acc_des = [0. for _ in q]
+    vel_des = [0. for _ in q_dot]
     
-    # M_sim = np.array(p.calculateMassMatrix(robot_id, pos))
-    # M_cal = calc_mass_mat(q)
+    M_sim = np.array(p.calculateMassMatrix(robot_id, q[:2]))
+    M_cal = calc_mass_mat(q)
+    # print("M_sim")
+    # print(M_sim)
+    # print("M_cal")
+    # print(M_cal)
+    # print("Diff_M")
     # print(M_sim-M_cal)
     
-    # C_sim = np.array(p.calculateInverseDynamics(robot_id, pos[:5], vel[:5], acc_des))
-    # print(C_sim)
-    # G_sim = np.array(p.calculateInverseDynamics(robot_id, pos, vel_des, acc_des))
+    G_sim = np.array(p.calculateInverseDynamics(robot_id, q[:2], vel_des[:2], acc_des[:2]))
+    G_cal = calc_gravity_mat(q)
+    # print("G_sim")
     # print(G_sim)
+    # print("G_cal")
+    # print(G_cal)
+    # print("Diff_G")
+    # print(G_sim-G_cal)
 
-    #calc_mass_mat
+    C_sim = np.array(p.calculateInverseDynamics(robot_id, q[:2], q_dot[:2], acc_des[:2])) - G_cal
+    C_cal = calc_coriolis_mat(q,q_dot)
+    print("C_sim")
+    print(C_sim)
+    print("C_cal")
+    print(C_cal)
+    print("Diff_C")
+    print(C_sim-C_cal)
     
     p.stepSimulation()
     time.sleep(SAMPLING_RATE)
