@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rsd_robot">
+    <material name="red">
+        <color rgba="1.0 0.0 0.0 1.0"/>
+    </material>
+
+    <material name="green">
+        <color rgba="0.0 1.0 0.0 1.0"/>
+    </material>
+
+    <material name="blue">
+        <color rgba="0.0 0.0 1.0 1.0"/>
+    </material>
+
+    <material name='black'>
+        <color rgba='0.0 0.0 0.0 1.0'/>
+    </material>
+
+    <material name='white'>
+        <color rgba='1.0 1.0 1.0 1.0'/>
+    </material>
+
+    <material name='orange'>
+        <color rgba='1.0 0.4 0.0 1.0'/>
+    </material>
+
+    <material name='yellow'>
+        <color rgba='1.0 1.0 0.0 1.0'/>
+    </material>
+
+    <material name="LightGrey">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+    </material>
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <!-- <box size="0.1 0.1 0.1"/> -->
+                <mesh filename="package://rsdrobot_description/meshes/base_link.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <!-- <box size="0.1 0.1 0.1"/> -->
+                <mesh filename="package://rsdrobot_description/meshes/base_link.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- joint 1 -->
+    <joint name="joint1" type="revolute">
+        <parent link="base_link"/>
+        <child link="joint1_link"/>
+        <origin xyz="0.000 0.000 0.055" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/>
+    </joint>
+
+    <link name="joint1_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint1.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint1.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- joint 2 -->
+    <joint name="joint2" type="revolute">
+        <parent link="joint1_link"/>
+        <child link="joint2_link"/>
+        <origin xyz="0.070 0.000 0.075" rpy="1.570796 0.0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/>
+    </joint>
+
+    <link name="joint2_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint2.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint2.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <!-- joint 3 -->
+    <joint name="joint3" type="revolute">
+        <parent link="joint2_link"/>
+        <child link="joint3_link"/>
+        <origin xyz="0.000 0.2035 0.0" rpy="0.0 0.0 1.570796"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/>
+    </joint>
+
+    <link name="joint3_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint3.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint3.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <!-- joint 4 -->
+    <joint name="joint4" type="revolute">
+        <parent link="joint3_link"/>
+        <child link="joint4_link"/>
+        <origin xyz="0.000 -0.1746 0.0" rpy="0.0 0.0 -1.570796"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/>
+    </joint>
+
+    <link name="joint4_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint4.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint4.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- joint 5 -->
+    <joint name="joint5" type="revolute">
+        <parent link="joint4_link"/>
+        <child link="joint5_link"/>
+        <origin xyz="0.0356 0.0 0.0" rpy="-1.570796 0.0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/>
+    </joint>
+
+    <link name="joint5_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint5_6.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint5_6.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <!-- joint 6 -->
+    <joint name="joint6" type="revolute">
+        <parent link="joint5_link"/>
+        <child link="joint6_link"/>
+        <origin xyz="0.0 0.0 0.0" rpy="1.570796 0.0 1.570796"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/>
+    </joint>
+
+    <link name="joint6_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.01"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/joint5_6.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <!-- EE -->
+    <joint name="ee_joint" type="fixed">
+        <parent link="joint6_link"/>
+        <child link="ee_link"/>
+        <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+        <!-- <axis xyz="0 0 1"/>
+        <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/> -->
+    </joint>
+
+    <link name="ee_link">
+        <visual>
+            <origin xyz="0 0 -0.075"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/ee.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://rsdrobot_description/meshes/ee.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+</robot>

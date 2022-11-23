@@ -65,8 +65,8 @@ p.setAdditionalSearchPath(os.path.dirname(__file__) + '/ur_description')
 # Setup objects
 StartPos = [0, 0, 0]
 StartOrientation = p.getQuaternionFromEuler([0,0,0])
-robot_id = p.loadURDF("urdf/ur5.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION | p.URDF_USE_INERTIA_FROM_FILE)
-# robot_id = p.loadURDF("urdf/ur3.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION | p.URDF_USE_INERTIA_FROM_FILE)
+# robot_id = p.loadURDF("urdf/ur5.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION | p.URDF_USE_INERTIA_FROM_FILE)
+robot_id = p.loadURDF("urdf/ur3.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION | p.URDF_USE_INERTIA_FROM_FILE)
 
 dof = p.getNumJoints(robot_id)
 joints = range(dof-1)
@@ -82,38 +82,38 @@ p.setJointMotorControlArray(bodyUniqueId=robot_id,
 
 # Perform simulation step
 while True:
-    joint_states = p.getJointStates(robot_id, range(dof))
-    q = [state[0] for state in joint_states]
-    q_dot = [state[1] for state in joint_states]
-    acc_des = [0. for _ in q]
-    vel_des = [0. for _ in q_dot]
+    # joint_states = p.getJointStates(robot_id, range(dof))
+    # q = [state[0] for state in joint_states]
+    # q_dot = [state[1] for state in joint_states]
+    # acc_des = [0. for _ in q]
+    # vel_des = [0. for _ in q_dot]
     
-    M_sim = np.array(p.calculateMassMatrix(robot_id, q[:2]))
-    M_cal = calc_mass_mat(q)
-    print("M_sim")
-    print(M_sim)
-    print("M_cal")
-    print(M_cal)
-    print("Diff_M")
-    print(M_sim-M_cal)
+    # M_sim = np.array(p.calculateMassMatrix(robot_id, q[:2]))
+    # M_cal = calc_mass_mat(q)
+    # print("M_sim")
+    # print(M_sim)
+    # print("M_cal")
+    # print(M_cal)
+    # print("Diff_M")
+    # print(M_sim-M_cal)
     
-    G_sim = np.array(p.calculateInverseDynamics(robot_id, q[:2], vel_des[:2], acc_des[:2]))
-    G_cal = calc_gravity_mat(q)
-    print("G_sim")
-    print(G_sim)
-    print("G_cal")
-    print(G_cal)
-    print("Diff_G")
-    print(G_sim-G_cal)
+    # G_sim = np.array(p.calculateInverseDynamics(robot_id, q[:2], vel_des[:2], acc_des[:2]))
+    # G_cal = calc_gravity_mat(q)
+    # print("G_sim")
+    # print(G_sim)
+    # print("G_cal")
+    # print(G_cal)
+    # print("Diff_G")
+    # print(G_sim-G_cal)
 
-    C_sim = np.array(p.calculateInverseDynamics(robot_id, q[:2], q_dot[:2], acc_des[:2])) - G_cal
-    C_cal = calc_coriolis_mat(q,q_dot)
-    print("C_sim")
-    print(C_sim)
-    print("C_cal")
-    print(C_cal)
-    print("Diff_C")
-    print(C_sim-C_cal)
+    # C_sim = np.array(p.calculateInverseDynamics(robot_id, q[:2], q_dot[:2], acc_des[:2])) - G_cal
+    # C_cal = calc_coriolis_mat(q,q_dot)
+    # print("C_sim")
+    # print(C_sim)
+    # print("C_cal")
+    # print(C_cal)
+    # print("Diff_C")
+    # print(C_sim-C_cal)
     
     p.stepSimulation()
     time.sleep(SAMPLING_RATE)
