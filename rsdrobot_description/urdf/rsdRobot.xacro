@@ -222,9 +222,10 @@
 
     <link name="ee_link">
         <visual>
-            <origin xyz="0 0 -0.075"/>
+            <origin xyz="0 0 -0.0632"/>
             <geometry>
                 <mesh filename="package://rsdrobot_description/meshes/ee.dae" scale="0.001 0.001 0.001"/>
+                <!-- <sphere radius="0.01"/> -->
             </geometry>
             <material name="LightGrey"/>
         </visual>
