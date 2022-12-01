@@ -1,9 +1,13 @@
+#!/usr/bin/env python
+
 import pybullet as p
 import pybullet_data
 import time
 import os
 import math
 import numpy as np
+import rospy
+from std_msgs.msg import String
 
 # Environment setup
 SAMPLING_RATE = 1e-3  # 0.001s = 1 ms

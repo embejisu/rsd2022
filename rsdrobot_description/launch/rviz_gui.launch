@@ -2,13 +2,11 @@
     <rosparam param="source_list">[js/cmd/joint_states]</rosparam>
     <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rsdrobot_description)/urdf/rsdRobot.xacro'"/>
 
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-        <param name="rate" value="100"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
         <remap from="joint_states" to="js/joint_states" />
     </node>
 
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
-        <param name="rate" value="100"/>
         <remap from="joint_states" to="js/joint_states" />
     </node>
 

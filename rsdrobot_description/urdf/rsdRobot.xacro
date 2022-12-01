@@ -81,7 +81,7 @@
     <joint name="joint2" type="revolute">
         <parent link="joint1_link"/>
         <child link="joint2_link"/>
-        <origin xyz="0.070 0.000 0.075" rpy="1.570796 0.0 0.0"/>
+        <origin xyz="0.070 0.000 0.0753" rpy="1.570796 0.0 0.0"/>
         <axis xyz="0 0 1"/>
         <limit lower="-3.141592" upper="3.141592" effort="100.0" velocity="100.0"/>
     </joint>
@@ -197,7 +197,7 @@
         <visual>
             <origin xyz="0 0 0"/>
             <geometry>
-                <sphere radius="0.01"/>
+                <sphere radius="0.001"/>
             </geometry>
             <material name="LightGrey"/>
         </visual>
